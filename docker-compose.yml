@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    container_name: maturita_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: nemocnice_db
+    ports:
+      - "5432:5432"
+
+  api:
+    build: .
+    container_name: maturita_backend
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://user:password@db:5432/nemocnice_db"
+    depends_on:
+      - db
